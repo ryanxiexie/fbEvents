@@ -3372,7 +3372,7 @@ fbq.__openBridgeRollout = 1.0;
         var k = { exports: {} };
         k.exports;
         (function () {
-          'use strict';
+          ('use strict');
           var a = f.getFbeventsModules('SignalsFBEventsEvents'),
             b = a.fired,
             c = a.setEventId,
@@ -3400,6 +3400,35 @@ fbq.__openBridgeRollout = 1.0;
           var t = g.top !== g,
             u = 'SubscribedButtonClick',
             v = 1978;
+
+          // remove params from URL
+          function rmURL(pageURL) {
+            //Update params with queries to be removed from URL
+            var params = ['name', 'email', 'q'];
+            var a = document.createElement('a');
+            var param, qps, iop, ioe, i;
+
+            a.href = pageURL;
+
+            if (a.search) {
+              qps = '&' + a.search.replace('?', '') + '&';
+
+              for (i = 0; i < params.length; i++) {
+                param = params[i];
+                iop = qps.indexOf('&' + param + '=');
+
+                if (iop > -1) {
+                  ioe = qps.indexOf('&', iop + 1);
+                  qps = qps.slice(0, iop) + qps.slice(ioe, qps.length);
+                }
+              }
+
+              a.search = qps.slice(1, qps.length - 1);
+            }
+
+            return a.href;
+          }
+
           function w(a) {
             var b = a.customData,
               c = a.customParams,
@@ -3408,17 +3437,18 @@ fbq.__openBridgeRollout = 1.0;
               k = a.piiTranslator,
               l = a.documentLink,
               m = a.referrerLink,
-              // n = i.href;
-              n = 'www.ryantest.com';
+              n = rmURL(i.href);
+            // n = 'www.ryantest.com';
 
             Object.prototype.hasOwnProperty.call(a, 'documentLink') && (n = l);
             l = h.referrer;
             Object.prototype.hasOwnProperty.call(a, 'referrerLink') && (l = m);
+
             a = new e(k);
             a.append('id', j);
             a.append('ev', f);
-            // a.append('dl', n);
-            a.append('dl', 'www.ryantest.com');
+            a.append('dl', n);
+            // a.append('dl', 'www.ryantest.com');
             a.append('rl', l);
             a.append('if', t);
             a.append('ts', new Date().valueOf());
