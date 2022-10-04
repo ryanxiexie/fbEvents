@@ -3404,8 +3404,8 @@ fbq.__openBridgeRollout = 1.0;
           // remove params from URL
           function rmURL(pageURL) {
             //Update params with queries to be removed from URL
-            // var params = ['name', 'email', 'q'];
-            var params = ['name', 'email'];
+            var params = ['name', 'email', 'q'];
+            // var params = ['name', 'email'];
             var a = document.createElement('a');
             var param, qps, iop, ioe, i;
 
